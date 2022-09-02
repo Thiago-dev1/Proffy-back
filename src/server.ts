@@ -76,6 +76,14 @@ route.get("/study", (req: Request, res: Response) => {
     res.json(proffys)
 })
 
+route.post("/give-classes", (req: Request, res: Response) => {
+    const data = req.body
+    //console.log(dados)
+    proffys.push(data)
+    
+    res.send("izi")
+})
+
 
 app.use(route)
 
