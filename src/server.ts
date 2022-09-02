@@ -39,9 +39,40 @@ const proffys = [
     }
 ]
 
+const subject = [
+    "Artes",
+    "Biologia",
+    "Ciência",
+    "Educação Física",
+    "Física",
+    "Geografia",
+    "História",
+    "Matemática",
+    "Português",
+    "Química"
+]
+
+const weekday = [
+    "Domingo",
+    "Segunda",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado"
+]
+    
+route.get("/weekday", (req: Request, res: Response) => {
+    res.json(weekday)
+})
+
+route.get("/subject", (req: Request, res: Response) => {
+    res.json(subject)
+})
 
 
 route.get("/study", (req: Request, res: Response) => {
+    console.log(req.query)
     res.json(proffys)
 })
 
