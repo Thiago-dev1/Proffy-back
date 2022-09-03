@@ -11,6 +11,12 @@ app.use(cors())
 app.use(express.json())
 
 
+interface ScheduleItem {
+    week_day: number,
+    from: string,
+    to: string
+};
+
 
 const proffys = [
     {   
@@ -61,6 +67,26 @@ const weekday = [
     "Sexta-feira",
     "Sábado"
 ]
+
+
+function convetHourToMinutes(time: string){
+    const [hour, minutes] = time.split(':').map(Number);
+    const timeInMinutes = (hour * 60) + minutes;
+    return timeInMinutes;
+}
+
+function getSubject(subjectNumber: Number) {
+    const position = +subjectNumber - 1
+
+    return subject[position]
+}
+
+function getWeekday(weekdayNumber: Number) {
+    const position = +weekdayNumber - 1
+
+    return weekday[position]
+}
+
     
 route.get("/weekday", (req: Request, res: Response) => {
     res.json(weekday)
@@ -78,7 +104,18 @@ route.get("/study", (req: Request, res: Response) => {
 
 route.post("/give-classes", (req: Request, res: Response) => {
     const data = req.body
-    //console.log(dados)
+
+    
+    data.subject = getSubject(data.subject)
+
+    data.schedule.map((scheduleItem: ScheduleItem, index:number) => {
+        data.schedule[index].week_day = getWeekday(scheduleItem.week_day)
+        data.schedule[index].from = convetHourToMinutes(scheduleItem.from)
+        data.schedule[index].to = convetHourToMinutes(scheduleItem.to)
+    })
+    
+
+    console.log(data)
     proffys.push(data)
     
     res.send("izi")
@@ -87,4 +124,4 @@ route.post("/give-classes", (req: Request, res: Response) => {
 
 app.use(route)
 
-app.listen(3333, () => 'server running on port 3333')
+app.listen(33334, () => 'server running on port 3333')
